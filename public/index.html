@@ -673,7 +673,7 @@
                     <label class="form-label">Email Address</label>
                     <div class="input-group">
                         <input type="email" id="email" class="form-control" placeholder="Target email address">
-                        <button class="btn-neon secondary" onclick="generateEmail()" title="Generate TempMail">
+                        <button class="btn-neon secondary" id="genEmailBtn" onclick="generateEmail()" title="Generate TempMail">
                             <i class="fas fa-bolt"></i> Gen
                         </button>
                     </div>
@@ -723,7 +723,7 @@
                         <label class="form-label">Target Address</label>
                         <div class="input-group">
                             <input type="email" id="checkEmail" class="form-control" placeholder="Email to intercept">
-                            <button class="btn-neon secondary" onclick="checkInbox()">
+                            <button class="btn-neon secondary" id="scanBtn" onclick="checkInbox()">
                                 <i class="fas fa-radar"></i> Scan
                             </button>
                         </div>
@@ -795,7 +795,7 @@
 
         <footer>
             <div class="neon-text" style="font-size: 1.2rem; font-weight:bold; margin-bottom: 10px;">FBA Gen Advanced</div>
-            <p>© 2026 Crafted by Yasis x Kurapika Development. Interface Redefined.</p>
+            <p>© 2026 Crafted by Yasis x Kurapika x VincentSensei Development. Interface Redefined.</p>
             <p style="margin-top: 5px; opacity: 0.5;"><i class="fas fa-shield-virus"></i> Independent network. Not affiliated with Meta/Facebook.</p>
         </footer>
     </div>
@@ -821,7 +821,7 @@
 
         // Generate Email
         async function generateEmail() {
-            const btn = event.currentTarget;
+            const btn = document.getElementById('genEmailBtn');
             const originalHtml = btn.innerHTML;
             btn.innerHTML = '<div class="spinner"></div>';
             btn.disabled = true;
@@ -918,7 +918,7 @@
                 return;
             }
 
-            const btn = event.currentTarget;
+            const btn = document.getElementById('scanBtn');
             const originalHtml = btn.innerHTML;
             btn.innerHTML = '<div class="spinner"></div>';
             btn.disabled = true;
