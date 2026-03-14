@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Account Creator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --bg-primary: #f0f2f5;
+            --bg-secondary: #ffffff;
+            --text-primary: #1c1e21;
+            --text-secondary: #65676b;
+            --accent: #1877f2;
+            --accent-hover: #166fe5;
+            --success: #42b72a;
+            --border: #dddfe2;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --card-bg: #ffffff;
+            --input-bg: #f5f6f7;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #18191a;
+            --bg-secondary: #242526;
+            --text-primary: #e4e6eb;
+            --text-secondary: #b0b3b8;
+            --accent: #2d88ff;
+            --accent-hover: #1877f2;
+            --success: #42b72a;
+            --border: #3e4042;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --card-bg: #242526;
+            --input-bg: #3a3b3c;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Privacy Policy Banner */
+        .privacy-banner {
+            background: var(--accent);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .privacy-banner button {
+            background: white;
+            color: var(--accent);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .privacy-banner button:hover {
+            background: var(--bg-primary);
+            transform: scale(1.05);
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-group .form-control {
+            flex: 1;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--input-bg);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-pulse {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Response Box */
+        .response-box {
+            background: var(--input-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            position: relative;
+            border: 1px solid var(--border);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .response-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .response-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .response-actions button {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .response-actions button:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .response-content {
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.5;
+        }
+
+        /* Copy success animation */
+        .copy-success {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        /* Account Info */
+        .account-info {
+            display: grid;
+            gap: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            background: var(--input-bg);
+            border-radius: 5px;
+        }
+
+        .info-item i {
+            width: 20px;
+            color: var(--accent);
+        }
+
+        .info-item .label {
+            color: var(--text-secondary);
+            min-width: 80px;
+        }
+
+        .info-item .value {
+            font-weight: 600;
+            word-break: break-all;
+        }
+
+        /* Inbox Messages */
+        .inbox-message {
+            padding: 10px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .inbox-message:hover {
+            background: var(--input-bg);
+        }
+
+        .message-subject {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .message-preview {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        /* Dashboard Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: var(--input-bg);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Donation Section */
+        .donation-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .donation-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .donation-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .qr-placeholder {
+            background: var(--input-bg);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-placeholder i {
+            font-size: 48px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .donors-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .donor-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .donor-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+        }
+
+        /* Clear button specific */
+        .clear-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .clear-btn:hover {
+            background: var(--input-bg);
+            color: #ff4444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <i class="fab fa-facebook"></i>
+                <span>FB Auto Creator</span>
+            </div>
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+
+        <!-- Privacy Banner -->
+        <div class="privacy-banner" id="privacyBanner">
+            <div>
+                <i class="fas fa-shield-alt"></i>
+                By using this service, you agree to our Privacy Policy and Terms of Service
+            </div>
+            <button onclick="acceptPrivacy()">Accept</button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-grid">
+            <!-- Left Column - Account Creation -->
+            <div class="card">
+                <h2><i class="fas fa-user-plus"></i> Create Account</h2>
+                
+                <div class="form-group">
+                    <label>First Name (Optional)</label>
+                    <input type="text" id="firstName" class="form-control" placeholder="Leave empty for random">
+                </div>
+
+                <div class="form-group">
+                    <label>Last Name (Optional)</label>
+                    <input type="text" id="lastName" class="form-control" placeholder="Leave empty for random">
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <div class="input-group">
+                        <input type="email" id="email" class="form-control" placeholder="Enter email or generate one">
+                        <button class="btn btn-outline" onclick="generateEmail()">
+                            <i class="fas fa-envelope"></i> Gen
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select id="gender" class="form-control">
+                        <option value="">Random</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Password (Optional)</label>
+                    <input type="text" id="password" class="form-control" placeholder="Leave empty for random">
+                </div>
+
+                <button class="btn btn-primary" onclick="createAccount()" id="createBtn" style="width: 100%;">
+                    <i class="fas fa-magic"></i> Create Facebook Account
+                </button>
+
+                <!-- Response Area -->
+                <div id="responseArea" class="response-box" style="display: none;">
+                    <div class="response-header">
+                        <span><i class="fas fa-info-circle"></i> Result</span>
+                        <div class="response-actions">
+                            <button onclick="copyResponse()" title="Copy">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <button onclick="clearResponse()" class="clear-btn" title="Clear">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="responseContent" class="response-content"></div>
+                </div>
+            </div>
+
+            <!-- Right Column - Inbox & Verification -->
+            <div class="card">
+                <h2><i class="fas fa-inbox"></i> Inbox & Verification</h2>
+                
+                <div class="form-group">
+                    <label>Check Email</label>
+                    <div class="input-group">
+                        <input type="email" id="checkEmail" class="form-control" placeholder="Enter email to check">
+                        <button class="btn btn-outline" onclick="checkInbox()">
+                            <i class="fas fa-search"></i> Check
+                        </button>
+                    </div>
+                </div>
+
+                <div id="inboxArea" class="response-box" style="display: none;">
+                    <div class="response-header">
+                        <span><i class="fas fa-envelope-open-text"></i> Messages</span>
+                        <button onclick="clearInbox()" class="clear-btn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div id="inboxContent"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div class="card" style="margin-bottom: 20px;">
+            <h2><i class="fas fa-chart-line"></i> Dashboard</h2>
+            
+            <div class="stats-grid" id="dashboardStats">
+                <div class="stat-card loading-pulse">
+                    <div class="stat-value">-</div>
+                    <div class="stat-label">Total Accounts</div>
+                </div>
+                <div class="stat-card loading-pulse">
+                    <div class="stat-value">-</div>
+                    <div class="stat-label">Last Hour</div>
+                </div>
+                <div class="stat-card loading-pulse">
+                    <div class="stat-value">-</div>
+                    <div class="stat-label">Last 24h</div>
+                </div>
+                <div class="stat-card loading-pulse">
+                    <div class="stat-value">-</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+            </div>
+
+            <div id="recentAccounts" style="max-height: 200px; overflow-y: auto;">
+                <!-- Recent accounts will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Donation Section -->
+        <div class="donation-section">
+            <h2 style="margin-bottom: 20px;"><i class="fas fa-heart" style="color: #ff4444;"></i> Support the Project</h2>
+            
+            <div class="donation-grid">
+                <div>
+                    <div class="qr-placeholder" id="qrCode">
+                        <div>
+                            <i class="fas fa-qrcode"></i>
+                            <p>GCash QR Code</p>
+                            <small style="color: var(--text-secondary);">Scan to donate</small>
+                        </div>
+                    </div>
+                    <p style="margin-top: 10px; color: var(--text-secondary);">
+                        <i class="fas fa-mobile-alt"></i> GCash: 09123456789
+                    </p>
+                </div>
+                
+                <div>
+                    <h3><i class="fas fa-trophy"></i> Recent Donors</h3>
+                    <div class="donors-list" id="donorsList">
+                        <div class="donor-item">
+                            <i class="fas fa-user-circle"></i>
+                            <div>
+                                <strong>John D.</strong>
+                                <small style="color: var(--text-secondary);">PHP 100 • 2 mins ago</small>
+                            </div>
+                        </div>
+                        <div class="donor-item">
+                            <i class="fas fa-user-circle"></i>
+                            <div>
+                                <strong>Maria S.</strong>
+                                <small style="color: var(--text-secondary);">PHP 50 • 1 hour ago</small>
+                            </div>
+                        </div>
+                        <div class="donor-item">
+                            <i class="fas fa-user-circle"></i>
+                            <div>
+                                <strong>Pedro R.</strong>
+                                <small style="color: var(--text-secondary);">PHP 200 • 3 hours ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2024 Facebook Auto Creator. For educational purposes only.</p>
+            <p style="font-size: 12px; margin-top: 10px;">
+                <i class="fas fa-shield-alt"></i> Not affiliated with Facebook
+            </p>
+        </div>
+    </div>
+
+    <!-- Copy Success Notification -->
+    <div id="copySuccess" class="copy-success" style="display: none;">
+        <i class="fas fa-check-circle"></i> Copied to clipboard!
+    </div>
+
+    <script>
+        // Theme Management
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update icon
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // Initialize theme
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        })();
+
+        // Privacy Policy
+        function acceptPrivacy() {
+            document.getElementById('privacyBanner').style.display = 'none';
+            localStorage.setItem('privacyAccepted', 'true');
+        }
+
+        if (localStorage.getItem('privacyAccepted')) {
+            document.getElementById('privacyBanner').style.display = 'none';
+        }
+
+        // Generate Email
+        async function generateEmail() {
+            const btn = event.currentTarget;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<span class="loading-spinner"></span>';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/tempmail/gen');
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('email').value = data.data.email;
+                    showNotification('Email generated successfully!', 'success');
+                } else {
+                    showNotification('Failed to generate email', 'error');
+                }
+            } catch (error) {
+                showNotification('Error generating email', 'error');
+            } finally {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }
+        }
+
+        // Create Account
+        async function createAccount() {
+            const btn = document.getElementById('createBtn');
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<span class="loading-spinner"></span> Creating...';
+            btn.disabled = true;
+
+            const email = document.getElementById('email').value;
+            if (!email) {
+                showNotification('Please enter or generate an email', 'error');
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+                return;
+            }
+
+            const data = {
+                email: email,
+                firstName: document.getElementById('firstName').value || undefined,
+                lastName: document.getElementById('lastName').value || undefined,
+                gender: document.getElementById('gender').value || undefined,
+                password: document.getElementById('password').value || undefined
+            };
+
+            try {
+                const response = await fetch('/api/fbcreate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    displayAccountResult(result.data);
+                    loadDashboard(); // Refresh dashboard
+                    showNotification('Account created successfully!', 'success');
+                } else {
+                    showNotification('Error: ' + result.error, 'error');
+                }
+            } catch (error) {
+                showNotification('Error creating account', 'error');
+            } finally {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }
+        }
+
+        // Display Account Result
+        function displayAccountResult(account) {
+            const responseArea = document.getElementById('responseArea');
+            const responseContent = document.getElementById('responseContent');
+
+            let html = '<div class="account-info">';
+            html += `<div class="info-item"><i class="fas fa-user"></i><span class="label">Name:</span><span class="value">${account.firstName} ${account.lastName}</span></div>`;
+            html += `<div class="info-item"><i class="fas fa-envelope"></i><span class="label">Email:</span><span class="value">${account.email}</span></div>`;
+            html += `<div class="info-item"><i class="fas fa-lock"></i><span class="label">Password:</span><span class="value">${account.password}</span></div>`;
+            html += `<div class="info-item"><i class="fas fa-birthday-cake"></i><span class="label">Birthday:</span><span class="value">${account.birthday}</span></div>`;
+            html += `<div class="info-item"><i class="fas fa-id-card"></i><span class="label">User ID:</span><span class="value">${account.userId}</span></div>`;
+            html += `<div class="info-item"><i class="fas fa-link"></i><span class="label">Profile:</span><span class="value"><a href="${account.profileLink}" target="_blank">${account.profileLink}</a></span></div>`;
+            html += '</div>';
+
+            responseContent.innerHTML = html;
+            responseArea.style.display = 'block';
+        }
+
+        // Check Inbox
+        async function checkInbox() {
+            const email = document.getElementById('checkEmail').value || document.getElementById('email').value;
+            
+            if (!email) {
+                showNotification('Please enter an email', 'error');
+                return;
+            }
+
+            const btn = event.currentTarget;
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<span class="loading-spinner"></span>';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`/api/tempmail/inbox?email=${encodeURIComponent(email)}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    displayInbox(data.data, email);
+                } else {
+                    showNotification('Failed to fetch inbox', 'error');
+                }
+            } catch (error) {
+                showNotification('Error checking inbox', 'error');
+            } finally {
+                btn.innerHTML = originalHtml;
+                btn.disabled = false;
+            }
+        }
+
+        // Display Inbox
+        function displayInbox(data, email) {
+            const inboxArea = document.getElementById('inboxArea');
+            const inboxContent = document.getElementById('inboxContent');
+
+            let html = `<p><i class="fas fa-inbox"></i> ${data.count} messages for ${email}</p>`;
+
+            if (data.verification && data.verification.code) {
+                html += `<div class="info-item" style="background: var(--success); color: white; margin: 10px 0;">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Verification Code: <strong>${data.verification.code}</strong></span>
+                </div>`;
+            }
+
+            if (data.messages && data.messages.length > 0) {
+                data.messages.forEach(msg => {
+                    html += `<div class="inbox-message">
+                        <div class="message-subject">
+                            <i class="fas fa-envelope"></i> ${msg.subject || 'No Subject'}
+                        </div>
+                        <div class="message-preview">
+                            ${(msg.body_text || msg.body_html || '').substring(0, 100)}...
+                        </div>
+                        <small style="color: var(--text-secondary);">
+                            ${new Date(msg.created_at || msg.date).toLocaleString()}
+                        </small>
+                    </div>`;
+                });
+            } else {
+                html += '<p style="text-align: center; color: var(--text-secondary);"><i class="fas fa-inbox"></i> No messages yet</p>';
+            }
+
+            inboxContent.innerHTML = html;
+            inboxArea.style.display = 'block';
+        }
+
+        // Load Dashboard
+        async function loadDashboard() {
+            try {
+                const response = await fetch('/api/dashboard/stats');
+                const data = await response.json();
+
+                if (data.success) {
+                    const stats = data.data;
+                    document.querySelector('#dashboardStats .stat-card:nth-child(1) .stat-value').textContent = stats.totalAccounts;
+                    document.querySelector('#dashboardStats .stat-card:nth-child(2) .stat-value').textContent = stats.lastHour;
+                    document.querySelector('#dashboardStats .stat-card:nth-child(3) .stat-value').textContent = stats.lastDay;
+                    document.querySelector('#dashboardStats .stat-card:nth-child(4) .stat-value').textContent = Math.floor(stats.uptime / 60) + 'm';
+                }
+
+                // Load recent accounts
+                const recentResponse = await fetch('/api/accounts/recent');
+                const recentData = await recentResponse.json();
+
+                if (recentData.success) {
+                    displayRecentAccounts(recentData.data);
+                }
+            } catch (error) {
+                console.error('Failed to load dashboard:', error);
+            }
+        }
+
+        // Display Recent Accounts
+        function displayRecentAccounts(accounts) {
+            const container = document.getElementById('recentAccounts');
+            let html = '<h4 style="margin-bottom: 10px;">Recent Accounts</h4>';
+
+            if (accounts.length === 0) {
+                html += '<p style="color: var(--text-secondary);">No accounts created yet</p>';
+            } else {
+                accounts.slice(0, 5).forEach(acc => {
+                    html += `<div class="donor-item" style="justify-content: space-between;">
+                        <div>
+                            <i class="fas fa-user-circle"></i>
+                            <strong>${acc.firstName} ${acc.lastName}</strong>
+                        </div>
+                        <small style="color: var(--text-secondary);">${new Date(acc.createdAt).toLocaleTimeString()}</small>
+                    </div>`;
+                });
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Copy Response
+        function copyResponse() {
+            const content = document.getElementById('responseContent').innerText;
+            navigator.clipboard.writeText(content).then(() => {
+                const notification = document.getElementById('copySuccess');
+                notification.style.display = 'block';
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 2000);
+            });
+        }
+
+        // Clear Response
+        function clearResponse() {
+            document.getElementById('responseArea').style.display = 'none';
+            document.getElementById('responseContent').innerHTML = '';
+        }
+
+        // Clear Inbox
+        function clearInbox() {
+            document.getElementById('inboxArea').style.display = 'none';
+            document.getElementById('inboxContent').innerHTML = '';
+        }
+
+        // Show Notification
+        function showNotification(message, type) {
+            // You can implement a proper notification system here
+            alert(message); // Simple fallback
+        }
+
+        // Load dashboard on page load
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+
+        // Auto-refresh dashboard every 30 seconds
+        setInterval(loadDashboard, 30000);
+    </script>
+</body>
+</html>
