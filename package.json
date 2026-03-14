@@ -2,21 +2,25 @@
   "name": "facebook-auto-creator",
   "version": "1.0.0",
   "description": "Facebook Account Creator with TempMail Integration",
-  "main": "api/fbcreate.js",
+  "main": "index.js",
   "scripts": {
-    "start": "vercel dev",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "deploy": "vercel --prod"
   },
   "dependencies": {
     "axios": "^1.6.2",
+    "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.18.2",
-    "express-rate-limit": "^7.1.5",
-    "node-cache": "^5.1.2",
-    "cors": "^2.8.5",
-    "helmet": "^7.1.0"
+    "helmet": "^7.1.0",
+    "node-cache": "^5.1.2"
   },
   "devDependencies": {
+    "nodemon": "^3.0.2",
     "vercel": "^32.5.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
